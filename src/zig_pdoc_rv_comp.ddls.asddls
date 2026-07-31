@@ -8,15 +8,16 @@
 @VDM.viewType: #COMPOSITE
 @Metadata.allowExtensions:true
 define root view entity ZIG_PDoc_RV_COMP
-  as select from Z_I_PurchDocOverallPrice
+  as select from ZIG_Pdoc_Overall_Price
+
   composition [0..*] of ZIG_PItem_COMP as _PurchaseDocumentItem
-  //  association [0..1] to I_Indicator                 as _IsApprovalRequired   on $projection.IsApprovalRequired = _IsApprovalRequired.IndicatorValue
+  //   association [0..1] to I_Indicator                 as _IsApprovalRequired   on $projection.IsApprovalRequired = _IsApprovalRequired.IndicatorValue
 {
 
   key PurchaseDocument,
       Description,
-//      Status,
-//      Priority,
+      Status,
+      Priority,
       //      @ObjectModel.foreignKey.association: '_IsApprovalRequired'
       case when OverallPrice > 1000 then 'X' else '' end as IsApprovalRequired,
 
@@ -26,27 +27,20 @@ define root view entity ZIG_PDoc_RV_COMP
       else 0 end                                         as OverallPriceCriticality,
 
       OverallPrice,
-
       Currency,
-
-//      PurchasingOrganization,
+      PurchasingOrganization,
       PurchaseDocumentImageURL,
-
-
       crea_date_time,
-
- //           crea_uname,
-
+      crea_uname,
       lchg_date_time,
-
       lchg_uname,
 
       /* Associations */
       _PurchaseDocumentItem,
-      _Currency
-//      _Priority,
-//      _Status,
+      _Currency,
+      _Priority,
+      _Status,
       //      _IsApprovalRequired,
-//      _PurchasingOrganization
+      _PurchasingOrganization
 
 }

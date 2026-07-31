@@ -13,12 +13,12 @@ define root view entity ZCG_PDoc_RV
   key PurchaseDocument,
       @EndUserText.label: 'Overall Price'
       OverallPrice,
-     @EndUserText.label: 'Approval Required'
+//     @EndUserText.label: 'Approval Required'
 //      @ObjectModel.foreignKey.association: '_IsApprovalRequired'
 //      @Consumption.valueHelpDefinition: [{entity:{name:'I_Indicator' , element: 'IndicatorValue'}}]
       IsApprovalRequired,
-      OverallPriceCriticality,
-//      @EndUserText.label: 'Status'
+//      OverallPriceCriticality,
+ //     @EndUserText.label: 'Status'
 //      @Consumption.valueHelpDefinition: [{entity:{name:'Z_C_StatusVH' , element: 'Status'}}]
 //      Status,
 //      @EndUserText.label: 'Priority'
@@ -52,8 +52,8 @@ define root view entity ZCG_PDoc_RV
       /* Associations */
      _PurchaseDocumentItem : redirected to composition child ZCG_PItem,
       _Currency
-//      _IsApprovalRequired,
+//      _IsApprovalRequired
 //      _Priority,   
-//      _Status,
+//      _Status
 //      _PurchasingOrganization 
 }

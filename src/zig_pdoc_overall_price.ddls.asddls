@@ -1,11 +1,11 @@
-@AbapCatalog.sqlViewName: 'ZIPURCHDOCPRICE'
+@AbapCatalog.sqlViewName: 'ZIG__PRICE'
 @EndUserText.label: 'Purchase Document Item'
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @VDM.viewType: #COMPOSITE
 @ObjectModel.representativeKey: 'PurchaseDocument'
 @ObjectModel.semanticKey: ['PurchaseDocument']
 
-define view Z_I_PurchDocOverallPrice
+define view ZIG_Pdoc_Overall_Price
   as select from ZIG_PDoc
   association [0..1] to I_Currency as _Currency on $projection.currency = _Currency.Currency
 {
@@ -19,11 +19,11 @@ define view Z_I_PurchDocOverallPrice
       @Semantics.currencyCode: true
       _PurchaseDocumentItem.Currency,
 
-//      PurchasingOrganization,
+      PurchasingOrganization,
 
       Description,
-//      Status,
-//      Priority,
+      Status,
+      Priority,
       
       PurchaseDocumentImageURL,
 
@@ -35,19 +35,19 @@ define view Z_I_PurchDocOverallPrice
 
       /* Associations */
       _PurchaseDocumentItem,
-      _Currency
-//      _Priority,
-//      _Status,
-//      _PurchasingOrganization
+      _Currency,
+      _Priority,
+      _Status,
+      _PurchasingOrganization
 
 }
 group by
   PurchaseDocument,
   _PurchaseDocumentItem.Currency,
-//  PurchasingOrganization,
+  PurchasingOrganization,
   Description,
-//  Status,
-//  Priority,
+  Status,
+  Priority,
   PurchaseDocumentImageURL,
   crea_date_time,
   crea_uname,

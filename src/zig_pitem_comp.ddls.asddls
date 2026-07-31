@@ -29,9 +29,9 @@ define view entity ZIG_PItem_COMP
       lchg_uname,
 
       /* Associations */
-//      _Currency,
-      _PurchaseDocument
-//      _QuantityUnitOfMeasure,
-//      _VendorType
+      _Currency,
+      _PurchaseDocument,
+      _QuantityUnitOfMeasure,
+      _VendorType
 
 }

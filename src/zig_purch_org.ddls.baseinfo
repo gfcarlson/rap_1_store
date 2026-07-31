@@ -3,15 +3,10 @@
 {
 "FROM":
 [
-"ZTG_PDOC"
+"ZTG_PURCH_ORG"
 ],
 "ASSOCIATED":
-[
-"ZIG_PDOC_PRIORITY",
-"ZIG_PDOC_STATUS",
-"ZIG_PITEM",
-"ZIG_PURCH_ORG"
-],
+[],
 "BASE":
 [],
 "ANNO_REF":
