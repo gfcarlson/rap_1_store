@@ -1,0 +1,14 @@
+@EndUserText.label: 'Service Definition V1'
+define service ZSDG_PDOC_V_1 {
+  expose ZCG_PDoc_RV;
+  expose ZCG_PItem;
+  expose ZIG_PDoc;
+  expose ZIG_Pdoc_Overall_Price;
+  expose ZIG_Pdoc_Priority;
+  expose ZIG_PDoc_RV_COMP;
+  expose ZIG_PDoc_Status;
+  expose ZIG_PItem;
+  expose ZIG_PItem_COMP;
+  expose ZIG_Purch_Org;
+  expose ZIG_Vendor_type;
+}

@@ -1,0 +1,73 @@
+managed implementation in class zbig_pdoc_rv_comp unique;
+strict(2);
+
+define behavior for ZIG_PDoc_RV_COMP alias PurchaseDocument
+persistent table ztg_pdoc
+
+lock master
+authorization master( global )
+{
+  create;
+  update;
+  delete;
+
+  association _PurchaseDocumentItem { create; }
+
+
+  action approve_order result [1] $self;
+  action reject_order result [1] $self;
+	
+
+
+
+  field ( numbering : managed, readonly ) PurchaseDocument;
+
+  field ( readonly )  crea_date_time, lchg_date_time, lchg_uname;
+
+  mapping for ztg_pdoc
+  {
+    PurchaseDocument         = purchasedocument;
+    Description              = description;
+    Status                   = status;
+    Priority                 = priority;
+    PurchasingOrganization   = purchasingorganization;
+    PurchaseDocumentImageURL = purchasedocumentimageurl;
+    crea_date_time           = crea_date_time;
+    crea_uname               = crea_uname;
+    lchg_date_time           = lchg_date_time;
+    lchg_uname               = lchg_uname;
+  }
+}
+
+define behavior for ZIG_PItem_COMP alias PurchaseDocumentItem
+persistent table ztg_pitem
+
+lock dependent by _PurchaseDocument
+authorization dependent by _PurchaseDocument
+{
+  update;
+  delete;
+
+  field ( numbering : managed, readonly ) PurchaseDocumentItem;
+
+  field ( readonly )  PurchaseDocument;
+
+  association _PurchaseDocument { }
+
+  mapping for ztg_pitem
+  {
+    PurchaseDocumentItem         = purchasedocumentitem;
+    PurchaseDocument             = purchasedocument;
+    Description                  = description;
+    Vendor                       = vendor;
+    VendorType                   = vendortype;
+    Price                        = price;
+    Currency                     = currency;
+    Quantity                     = quantity;
+    QuantityUnit                 = quantityunit;
+    crea_date_time               = crea_date_time;
+    crea_uname                   = crea_uname;
+    lchg_date_time               = lchg_date_time;
+    lchg_uname                   = lchg_uname;
+  }
+}

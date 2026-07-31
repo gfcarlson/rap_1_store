@@ -17,28 +17,28 @@ define root view entity ZCG_PDoc_RV
 //      @ObjectModel.foreignKey.association: '_IsApprovalRequired'
 //      @Consumption.valueHelpDefinition: [{entity:{name:'I_Indicator' , element: 'IndicatorValue'}}]
       IsApprovalRequired,
-//      OverallPriceCriticality,
- //     @EndUserText.label: 'Status'
-//      @Consumption.valueHelpDefinition: [{entity:{name:'Z_C_StatusVH' , element: 'Status'}}]
-//      Status,
-//      @EndUserText.label: 'Priority'
-//      @Consumption.valueHelpDefinition: [{entity:{name:'Z_C_PriorityVH' , element: 'Priority'}}]
-//      Priority,
+      OverallPriceCriticality,
+      @EndUserText.label: 'Status'
+      @Consumption.valueHelpDefinition: [{entity:{name:'Z_C_StatusVH' , element: 'Status'}}]
+      Status,
+      @EndUserText.label: 'Priority'
+      @Consumption.valueHelpDefinition: [{entity:{name:'Z_C_PriorityVH' , element: 'Priority'}}]
+      Priority,
       @Search.defaultSearchElement : true
       @Search.fuzzinessThreshold : 0.8
       @Semantics.text: true
       @EndUserText.label: 'Description'
       Description,
-//      @EndUserText.label: 'Purchasing Organization'
-//      @Consumption.valueHelpDefinition: [{entity:{name:'Z_I_PurchasingOrganization' , element: 'PurchasingOrganization'}}]
-//      PurchasingOrganization,
+      @EndUserText.label: 'Purchasing Organization'
+      @Consumption.valueHelpDefinition: [{entity:{name:'Z_I_PurchasingOrganization' , element: 'PurchasingOrganization'}}]
+      PurchasingOrganization,
       @EndUserText.label: 'Currency'
       Currency,
       @EndUserText.label: 'Created at'
       @Consumption.filter.hidden: true
       crea_date_time,
-//      @EndUserText.label: 'Created by'
-//      crea_uname,
+      @EndUserText.label: 'Created by'
+      crea_uname,
       @EndUserText.label: 'Last changed at'
       @Consumption.filter.hidden: true
       lchg_date_time,
@@ -51,9 +51,9 @@ define root view entity ZCG_PDoc_RV
 
       /* Associations */
      _PurchaseDocumentItem : redirected to composition child ZCG_PItem,
-      _Currency
+//      _Currency
 //      _IsApprovalRequired
-//      _Priority,   
-//      _Status
-//      _PurchasingOrganization 
+      _Priority,   
+      _Status,
+      _PurchasingOrganization 
 }

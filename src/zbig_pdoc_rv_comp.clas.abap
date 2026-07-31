@@ -1,0 +1,5 @@
+CLASS zbig_pdoc_rv_comp DEFINITION PUBLIC ABSTRACT FINAL FOR BEHAVIOR OF zig_pdoc_rv_comp.
+ENDCLASS.
+
+CLASS zbig_pdoc_rv_comp IMPLEMENTATION.
+ENDCLASS.

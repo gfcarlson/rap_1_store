@@ -37,7 +37,7 @@ define root view entity ZIG_PDoc_RV_COMP
 
       /* Associations */
       _PurchaseDocumentItem,
-      _Currency,
+//      _Currency,
       _Priority,
       _Status,
       //      _IsApprovalRequired,
