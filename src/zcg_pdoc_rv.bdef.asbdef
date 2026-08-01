@@ -1,0 +1,21 @@
+projection;
+strict(2);
+
+define behavior for ZCG_PDoc_RV alias PurchaseDocument
+{
+  use create;
+  use update;
+  use delete;
+
+  use action approve_order;
+  use action reject_order;
+  use association _PurchaseDocumentItem { create; }
+}
+
+define behavior for ZCG_PItem alias PurchaseDocumentItem
+{
+  use update;
+  use delete;
+
+  use association _PurchaseDocument;
+}
