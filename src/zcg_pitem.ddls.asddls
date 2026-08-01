@@ -2,6 +2,7 @@
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @Search.searchable: true
 @Metadata.allowExtensions:true
+@Metadata.draftBehaviorType: #DRAFT_ENABLED
 @VDM.viewType: #CONSUMPTION
 
 define view entity ZCG_PItem

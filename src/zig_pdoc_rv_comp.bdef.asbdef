@@ -3,6 +3,7 @@ strict(2);
 
 define behavior for ZIG_PDoc_RV_COMP alias PurchaseDocument
 persistent table ztg_pdoc
+draft table ztg_pdoc_d
 
 lock master
 authorization master( global )
@@ -10,6 +11,9 @@ authorization master( global )
   create;
   update;
   delete;
+  draft action Edit;
+  draft action Discard;
+  draft action Resume;
 
   association _PurchaseDocumentItem { create; }
 
@@ -41,6 +45,7 @@ authorization master( global )
 
 define behavior for ZIG_PItem_COMP alias PurchaseDocumentItem
 persistent table ztg_pitem
+draft table ztg_pitem_d
 
 lock dependent by _PurchaseDocument
 authorization dependent by _PurchaseDocument
