@@ -3,6 +3,10 @@
 @Search.searchable: true
 @Metadata.allowExtensions:true
 @VDM.viewType: #CONSUMPTION
+@OData.publish: true
+@UI.insertable: true
+@UI.updatable: true
+@UI.deletable: true
 
 define view entity ZCG_PItem
    as projection on ZIG_PItem_COMP
