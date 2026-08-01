@@ -1,21 +1,29 @@
 projection;
 strict(2);
+use draft;
 
 define behavior for ZCG_PDoc_RV alias PurchaseDocument
+use etag
 {
   use create;
   use update;
   use delete;
 
+  use action Edit;
+  use action Activate;
+  use action Discard;
+  use action Resume;
+
   use action approve_order;
   use action reject_order;
-  use association _PurchaseDocumentItem { create; }
+  use association _PurchaseDocumentItem { create; with draft; }
 }
 
 define behavior for ZCG_PItem alias PurchaseDocumentItem
+use etag
 {
   use update;
   use delete;
 
-  use association _PurchaseDocument;
+  use association _PurchaseDocument { with draft; }
 }

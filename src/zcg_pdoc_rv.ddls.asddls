@@ -4,6 +4,7 @@
 @Metadata.allowExtensions:true
 @VDM.viewType: #CONSUMPTION
 define root view entity ZCG_PDoc_RV
+  provider contract transactional_query
   as projection on ZIG_PDoc_RV_COMP
 
 {
