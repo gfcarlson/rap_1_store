@@ -7,104 +7,38 @@
     <MASTERLANG>E</MASTERLANG>
     <STEXT>Purchase Document Exceptions</STEXT>
    </T100A>
-   <T100S>
-    <T100>
-     <SPRSL>E</SPRSL>
-     <ARBGB>ZMSG_E_PDOC</ARBGB>
-     <MSGNR>000</MSGNR>
-     <TEXT>Purchase Document &amp; Created</TEXT>
-    </T100>
-    <T100>
-     <SPRSL>E</SPRSL>
-     <ARBGB>ZMSG_E_PDOC</ARBGB>
-     <MSGNR>001</MSGNR>
-     <TEXT>Purchase Document Item &amp; Created</TEXT>
-    </T100>
+   <T100>
     <T100>
      <SPRSL>E</SPRSL>
      <ARBGB>ZMSG_E_PDOC</ARBGB>
      <MSGNR>002</MSGNR>
-     <TEXT>Purchase Document &amp; Approved</TEXT>
+     <TEXT>Purchase Document &amp;1 Approved</TEXT>
     </T100>
     <T100>
      <SPRSL>E</SPRSL>
      <ARBGB>ZMSG_E_PDOC</ARBGB>
      <MSGNR>003</MSGNR>
-     <TEXT>Purchase Document &amp; Closed</TEXT>
-    </T100>
-    <T100>
-     <SPRSL>E</SPRSL>
-     <ARBGB>ZMSG_E_PDOC</ARBGB>
-     <MSGNR>004</MSGNR>
-     <TEXT>Purchase Document &amp; Deleted</TEXT>
-    </T100>
-    <T100>
-     <SPRSL>E</SPRSL>
-     <ARBGB>ZMSG_E_PDOC</ARBGB>
-     <MSGNR>005</MSGNR>
-     <TEXT>Purchase Document &amp; Already exists in DB Table</TEXT>
-    </T100>
-    <T100>
-     <SPRSL>E</SPRSL>
-     <ARBGB>ZMSG_E_PDOC</ARBGB>
-     <MSGNR>006</MSGNR>
-     <TEXT>Purchase Document &amp; Already exists in Buffer Table</TEXT>
-    </T100>
-    <T100>
-     <SPRSL>E</SPRSL>
-     <ARBGB>ZMSG_E_PDOC</ARBGB>
-     <MSGNR>007</MSGNR>
-     <TEXT>Purchase Document Item &amp; Already exists in DB Table</TEXT>
-    </T100>
-    <T100>
-     <SPRSL>E</SPRSL>
-     <ARBGB>ZMSG_E_PDOC</ARBGB>
-     <MSGNR>008</MSGNR>
-     <TEXT>Purchase Document Item &amp; Already exists in Buffer Table</TEXT>
+     <TEXT>Purchase Document &amp;1 Closed</TEXT>
     </T100>
     <T100>
      <SPRSL>E</SPRSL>
      <ARBGB>ZMSG_E_PDOC</ARBGB>
      <MSGNR>009</MSGNR>
-     <TEXT>Purchase Document Number is Initial</TEXT>
-    </T100>
-    <T100>
-     <SPRSL>E</SPRSL>
-     <ARBGB>ZMSG_E_PDOC</ARBGB>
-     <MSGNR>010</MSGNR>
-     <TEXT>Purchase Document Item Number is Initial</TEXT>
-    </T100>
-    <T100>
-     <SPRSL>E</SPRSL>
-     <ARBGB>ZMSG_E_PDOC</ARBGB>
-     <MSGNR>011</MSGNR>
-     <TEXT>Purchase Document &amp; Updated</TEXT>
-    </T100>
-    <T100>
-     <SPRSL>E</SPRSL>
-     <ARBGB>ZMSG_E_PDOC</ARBGB>
-     <MSGNR>012</MSGNR>
-     <TEXT>Purchase Document Item &amp; Updated</TEXT>
+     <TEXT>Purchase Document is Initial</TEXT>
     </T100>
     <T100>
      <SPRSL>E</SPRSL>
      <ARBGB>ZMSG_E_PDOC</ARBGB>
      <MSGNR>013</MSGNR>
-     <TEXT>Purchase Document &amp; Is already Approved</TEXT>
+     <TEXT>Purchase Document &amp;1 Is already Approved</TEXT>
     </T100>
     <T100>
      <SPRSL>E</SPRSL>
      <ARBGB>ZMSG_E_PDOC</ARBGB>
      <MSGNR>014</MSGNR>
-     <TEXT>Purchase Document &amp; Is already Closed</TEXT>
+     <TEXT>Purchase Document &amp;1 Is already Closed</TEXT>
     </T100>
-    <T100>
-     <SPRSL>E</SPRSL>
-     <ARBGB>ZMSG_E_PDOC</ARBGB>
-     <MSGNR>015</MSGNR>
-     <TEXT>Purchase Document Item &amp; Deleted</TEXT>
-    </T100>
-   </T100S>
+   </T100>
   </asx:values>
  </asx:abap>
 </abapGit>
