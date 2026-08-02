@@ -19,12 +19,12 @@ define root view entity ZIG_PDoc_RV_COMP
       Status,
       Priority,
       //      @ObjectModel.foreignKey.association: '_IsApprovalRequired'
-      case when OverallPrice > 1000 then 'X' else '' end as IsApprovalRequired,
+      cast( case when OverallPrice > 1000 then 'X' else '' end as abap.char( 1 ) ) as IsApprovalRequired,
 
-      case when OverallPrice >= 0 and OverallPrice < 1000 then 3
+      cast( case when OverallPrice >= 0 and OverallPrice < 1000 then 3
       when OverallPrice >= 1000 and OverallPrice <= 10000 then 2
       when OverallPrice > 10000 then 1
-      else 0 end                                         as OverallPriceCriticality,
+      else 0 end as abap.int4 )                         as OverallPriceCriticality,
 
       OverallPrice,
       Currency,
