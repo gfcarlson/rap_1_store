@@ -100,14 +100,14 @@ annotate view ZCG_PDoc_RV with
         dataAction: 'Approve_Order',
         position: 10,
         importance: #HIGH,
-        label: 'Ident Approve'
+        label: 'Approve Order'
       },
       {
         type: #FOR_ACTION,
         dataAction: 'Reject_Order',
         position: 20,
         importance: #HIGH,
-        label: 'Ident Reject'
+        label: 'Reject Order'
       }
     ]
   }

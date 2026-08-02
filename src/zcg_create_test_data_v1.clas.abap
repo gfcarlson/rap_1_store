@@ -243,7 +243,7 @@ CLASS zcg_create_test_data_v1 IMPLEMENTATION.
   METHOD if_oo_adt_classrun~main.
     clean( ).
     create_purchase_documents( ).
-    create_purchase_document_items( ).
+   create_purchase_document_items( ).
     create_purch_doc_vendors( ).
     create_purch_doc_priorities( ).
     create_purch_doc_status( ).
