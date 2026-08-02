@@ -20,40 +20,90 @@ CLASS lhc_PurchaseDocument IMPLEMENTATION.
   ENDMETHOD.
 
 
-  method approve_order.
-
-     DATA ls_purchdocument TYPE ztg_pdoc.
+  METHOD approve_order.
     CLEAR result.
 * In the custom Action method for Approving a PurchaseDocument,
-* The incoming parameter is looped and the relevant PurchaseDocument status is set as approved and details of the Action is store in the RESULT parameter of the method
+* The incoming parameter is looped and the relevant PurchaseDocument status is set as approved
+* and details of the Action are stored in the RESULT parameter of the method
     LOOP AT keys ASSIGNING FIELD-SYMBOL(<fs_PurchaseDocument>).
+      " Message 009: report error if Purchase Document number is initial
+      IF <fs_PurchaseDocument>-PurchaseDocument IS INITIAL.
+        APPEND VALUE #( purchasedocument = <fs_PurchaseDocument>-PurchaseDocument
+                       %msg = new_message( id       = 'ZMSG_E_PDOC'
+                                           number   = '009'
+                                           severity = if_abap_behv_message=>severity-error )
+                       %element-purchasedocument = cl_abap_behv=>flag_changed )
+               TO reported-PurchaseDocument.
+        CONTINUE.
+      ENDIF.
       UPDATE ztg_pdoc SET status = 2 WHERE purchasedocument = @<fs_PurchaseDocument>-PurchaseDocument.
-      if sy-subrc eq 0.
-      APPEND VALUE #(   purchasedocument        = <fs_PurchaseDocument>-PurchaseDocument
-                        %param-purchasedocument = <fs_PurchaseDocument>-PurchaseDocument
-                        %param-status           = '2' )
+      IF sy-subrc EQ 0.
+        APPEND VALUE #( purchasedocument        = <fs_PurchaseDocument>-PurchaseDocument
+                       %param-purchasedocument = <fs_PurchaseDocument>-PurchaseDocument
+                       %param-status           = '2' )
                TO result.
-      endif.
+        " Message 002: Purchase Document & Approved
+        APPEND VALUE #( purchasedocument = <fs_PurchaseDocument>-PurchaseDocument
+                       %msg = new_message( id       = 'ZMSG_E_PDOC'
+                                           number   = '002'
+                                           v1       = <fs_PurchaseDocument>-PurchaseDocument
+                                           severity = if_abap_behv_message=>severity-success )
+                       %element-purchasedocument = cl_abap_behv=>flag_changed )
+               TO reported-PurchaseDocument.
+      ELSE.
+        " Message 013: Purchase Document & Is already Approved (update failed)
+        APPEND VALUE #( purchasedocument = <fs_PurchaseDocument>-PurchaseDocument
+                       %msg = new_message( id       = 'ZMSG_E_PDOC'
+                                           number   = '013'
+                                           v1       = <fs_PurchaseDocument>-PurchaseDocument
+                                           severity = if_abap_behv_message=>severity-error )
+                       %element-purchasedocument = cl_abap_behv=>flag_changed )
+               TO reported-PurchaseDocument.
+      ENDIF.
     ENDLOOP.
-* The relevant Success Message is mapped to the REPORTED parameter of the method
-    APPEND VALUE #(  purchasedocument = ls_purchdocument-purchasedocument
-                         %msg = new_message( id = 'ZPURCHDOC_EXCEPTIONS' number = '002' v1 = <fs_PurchaseDocument>-PurchaseDocument    severity = if_abap_behv_message=>severity-success )
-                        %element-purchasedocument = cl_abap_behv=>flag_changed ) TO reported-PurchaseDocument.
   ENDMETHOD.
 
   METHOD Reject_Order.
-    DATA ls_purchdocument TYPE ztg_pdoc.
-* In the custom Action method for Rejecting a PurchaseDocument,
-* The incoming parameter is looped and the relevant PurchaseDocument status is set as rejected and details of the Action is store in the RESULT parameter of the method
+* In the custom Action method for Rejecting/Closing a PurchaseDocument,
+* The incoming parameter is looped and the relevant PurchaseDocument status is set as closed (3)
+* and details of the Action are stored in the RESULT parameter of the method
     LOOP AT keys ASSIGNING FIELD-SYMBOL(<fs_PurchaseDocument>).
+      " Message 009: report error if Purchase Document number is initial
+      IF <fs_PurchaseDocument>-PurchaseDocument IS INITIAL.
+        APPEND VALUE #( purchasedocument = <fs_PurchaseDocument>-PurchaseDocument
+                       %msg = new_message( id       = 'ZMSG_E_PDOC'
+                                           number   = '009'
+                                           severity = if_abap_behv_message=>severity-error )
+                       %element-purchasedocument = cl_abap_behv=>flag_changed )
+               TO reported-PurchaseDocument.
+        CONTINUE.
+      ENDIF.
       UPDATE ztg_pdoc SET status = 3 WHERE purchasedocument = @<fs_PurchaseDocument>-PurchaseDocument.
+      IF sy-subrc EQ 0.
+        APPEND VALUE #( purchasedocument        = <fs_PurchaseDocument>-PurchaseDocument
+                       %param-purchasedocument = <fs_PurchaseDocument>-PurchaseDocument
+                       %param-status           = '3' )
+               TO result.
+        " Message 003: Purchase Document & Closed
+        APPEND VALUE #( purchasedocument = <fs_PurchaseDocument>-PurchaseDocument
+                       %msg = new_message( id       = 'ZMSG_E_PDOC'
+                                           number   = '003'
+                                           v1       = <fs_PurchaseDocument>-PurchaseDocument
+                                           severity = if_abap_behv_message=>severity-success )
+                       %element-purchasedocument = cl_abap_behv=>flag_changed )
+               TO reported-PurchaseDocument.
+      ELSE.
+        " Message 014: Purchase Document & Is already Closed (update failed)
+        APPEND VALUE #( purchasedocument = <fs_PurchaseDocument>-PurchaseDocument
+                       %msg = new_message( id       = 'ZMSG_E_PDOC'
+                                           number   = '014'
+                                           v1       = <fs_PurchaseDocument>-PurchaseDocument
+                                           severity = if_abap_behv_message=>severity-error )
+                       %element-purchasedocument = cl_abap_behv=>flag_changed )
+               TO reported-PurchaseDocument.
+      ENDIF.
     ENDLOOP.
-* The relevant Success Message is mapped to the REPORTED parameter of the method
-    APPEND VALUE #(  purchasedocument = ls_purchdocument-purchasedocument
-                         %msg = new_message( id = 'ZPURCHDOC_EXCEPTIONS' number = '003' v1 = <fs_PurchaseDocument>-PurchaseDocument    severity = if_abap_behv_message=>severity-success )
-                        %element-purchasedocument = cl_abap_behv=>flag_changed ) TO reported-PurchaseDocument.
-
-  endmethod.
+  ENDMETHOD.
 
 
 
