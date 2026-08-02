@@ -3,12 +3,8 @@
 @Search.searchable: true
 @Metadata.allowExtensions:true
 @VDM.viewType: #CONSUMPTION
-@OData.publish: true
-@UI.insertable: true
-@UI.updatable: true
-@UI.deletable: true
-
 define root view entity ZCG_PDoc_RV
+  provider contract transactional_query
   as projection on ZIG_PDoc_RV_COMP
 
 {

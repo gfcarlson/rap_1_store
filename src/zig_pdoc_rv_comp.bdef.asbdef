@@ -1,17 +1,25 @@
 managed implementation in class zbig_pdoc_rv_comp unique;
 strict(2);
+with draft;
 
 define behavior for ZIG_PDoc_RV_COMP alias PurchaseDocument
 persistent table ztg_pdoc
+draft table ztg_pdoc_d
 
-lock master
+etag master lchg_date_time
+lock master total etag lchg_date_time
 authorization master( global )
 {
   create;
   update;
   delete;
 
-  association _PurchaseDocumentItem { create; }
+  draft action Edit;
+  draft action Activate;
+  draft action Discard;
+  draft action Resume;
+
+  association _PurchaseDocumentItem { create; with draft; }
 
 
   action approve_order result [1] $self;
@@ -41,7 +49,9 @@ authorization master( global )
 
 define behavior for ZIG_PItem_COMP alias PurchaseDocumentItem
 persistent table ztg_pitem
+draft table ztg_pitem_d
 
+etag master lchg_date_time
 lock dependent by _PurchaseDocument
 authorization dependent by _PurchaseDocument
 {
@@ -52,7 +62,7 @@ authorization dependent by _PurchaseDocument
 
   field ( readonly )  PurchaseDocument;
 
-  association _PurchaseDocument { }
+  association _PurchaseDocument { with draft; }
 
   mapping for ztg_pitem
   {
