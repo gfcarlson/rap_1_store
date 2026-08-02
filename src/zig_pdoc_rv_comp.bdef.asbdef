@@ -18,6 +18,7 @@ authorization master( global )
   draft action Activate;
   draft action Discard;
   draft action Resume;
+  draft determine action Prepare;
 
   association _PurchaseDocumentItem { create; with draft; }
 
