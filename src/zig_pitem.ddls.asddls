@@ -53,7 +53,7 @@ define view ZIG_PItem
 
       @Semantics.amount.currencyCode: 'Currency'
       @DefaultAggregation: #SUM
-      quantity  *   price  as OverallItemPrice,
+      cast( quantity * price as abap.dec( 13, 2 ) ) as OverallItemPrice,
       
       @Semantics.imageUrl: true
       pdoc_item_image_url as PurchaseDocumentItemImageURL,

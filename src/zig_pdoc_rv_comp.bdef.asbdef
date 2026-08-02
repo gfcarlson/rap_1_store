@@ -15,7 +15,7 @@ authorization master( global )
   delete;
 
   draft action Edit;
-  draft action Activate;
+  draft action Activate optimized;
   draft action Discard;
   draft action Resume;
   draft determine action Prepare;
@@ -31,7 +31,8 @@ authorization master( global )
 
   field ( numbering : managed, readonly ) PurchaseDocument;
 
-  field ( readonly )  crea_date_time, lchg_date_time, lchg_uname;
+  field ( readonly )  Currency, IsApprovalRequired, OverallPrice, OverallPriceCriticality,
+                      crea_date_time, crea_uname, lchg_date_time, lchg_uname;
 
   mapping for ztg_pdoc
   {
@@ -61,7 +62,7 @@ authorization dependent by _PurchaseDocument
 
   field ( numbering : managed, readonly ) PurchaseDocumentItem;
 
-  field ( readonly )  PurchaseDocument;
+  field ( readonly )  PurchaseDocument, OverallItemPrice, crea_date_time, crea_uname, lchg_date_time, lchg_uname;
 
   association _PurchaseDocument { with draft; }
 
@@ -76,6 +77,7 @@ authorization dependent by _PurchaseDocument
     Currency                     = currency;
     Quantity                     = quantity;
     QuantityUnit                 = quantityunit;
+    PurchaseDocumentItemImageURL = pdoc_item_image_url;
     crea_date_time               = crea_date_time;
     crea_uname                   = crea_uname;
     lchg_date_time               = lchg_date_time;

@@ -14,7 +14,7 @@ define view ZIG_Pdoc_Overall_Price
 
       @Semantics.amount.currencyCode: 'Currency'
       @DefaultAggregation: #NONE
-      sum( _PurchaseDocumentItem.OverallItemPrice )  as OverallPrice,
+      cast( sum( _PurchaseDocumentItem.OverallItemPrice ) as abap.dec( 13, 2 ) ) as OverallPrice,
       @ObjectModel.foreignKey.association: '_Currency'
       @Semantics.currencyCode: true
       _PurchaseDocumentItem.Currency,
