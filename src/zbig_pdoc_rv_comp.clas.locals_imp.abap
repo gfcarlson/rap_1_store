@@ -32,18 +32,18 @@ CLASS lhc_PurchaseDocument IMPLEMENTATION.
       FAILED failed
       REPORTED reported.
 
-    LOOP AT keys INTO DATA(key).
-      IF line_exists( failed-PurchaseDocument[ %tky = key-%tky ] ).
+    LOOP AT keys INTO DATA(ls_key).
+      IF line_exists( failed-PurchaseDocument[ %tky = ls_key-%tky ] ).
         CONTINUE.
       ENDIF.
 
-      APPEND VALUE #( %tky    = key-%tky
-                      %param  = CORRESPONDING #( key ) ) TO result.
-      APPEND VALUE #( %tky                      = key-%tky
+      APPEND VALUE #( %tky    = ls_key-%tky
+                      %param  = CORRESPONDING #( ls_key ) ) TO result.
+      APPEND VALUE #( %tky                      = ls_key-%tky
                       %msg                      = new_message(
                                                        id       = 'ZPURCHDOC_EXCEPTIONS'
                                                        number   = '002'
-                                                       v1       = key-PurchaseDocument
+                                                       v1       = ls_key-PurchaseDocument
                                                        severity = if_abap_behv_message=>severity-success )
                       %element-PurchaseDocument = cl_abap_behv=>flag_changed )
         TO reported-PurchaseDocument.
@@ -62,18 +62,18 @@ CLASS lhc_PurchaseDocument IMPLEMENTATION.
       FAILED failed
       REPORTED reported.
 
-    LOOP AT keys INTO DATA(key).
-      IF line_exists( failed-PurchaseDocument[ %tky = key-%tky ] ).
+    LOOP AT keys INTO DATA(ls_key).
+      IF line_exists( failed-PurchaseDocument[ %tky = ls_key-%tky ] ).
         CONTINUE.
       ENDIF.
 
-      APPEND VALUE #( %tky    = key-%tky
-                      %param  = CORRESPONDING #( key ) ) TO result.
-      APPEND VALUE #( %tky                      = key-%tky
+      APPEND VALUE #( %tky    = ls_key-%tky
+                      %param  = CORRESPONDING #( ls_key ) ) TO result.
+      APPEND VALUE #( %tky                      = ls_key-%tky
                       %msg                      = new_message(
                                                        id       = 'ZPURCHDOC_EXCEPTIONS'
                                                        number   = '003'
-                                                       v1       = key-PurchaseDocument
+                                                       v1       = ls_key-PurchaseDocument
                                                        severity = if_abap_behv_message=>severity-success )
                       %element-PurchaseDocument = cl_abap_behv=>flag_changed )
         TO reported-PurchaseDocument.
