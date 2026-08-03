@@ -21,25 +21,78 @@ CLASS lhc_PurchaseDocument IMPLEMENTATION.
 
 
   METHOD approve_order.
-    CLEAR result.
 * In the custom Action method for Approving a PurchaseDocument,
-* The incoming parameter is looped and the relevant PurchaseDocument status is set as approved
-* and details of the Action are stored in the RESULT parameter of the method
-clear result.
+* current status is read first and branched upon before updating.
+* Messages used: 009 (initial), 013 (already approved), 014 (already closed), 002 (approved)
+    DATA lt_update TYPE TABLE FOR UPDATE zig_pdoc_rv_comp\\PurchaseDocument.
+    CLEAR result.
+
+    READ ENTITIES OF zig_pdoc_rv_comp IN LOCAL MODE
+      ENTITY PurchaseDocument
+      FIELDS ( Status )
+      WITH CORRESPONDING #( keys )
+      RESULT DATA(pdoc_data)
+      FAILED failed.
+
+    LOOP AT keys INTO DATA(key_).
+
+      IF key_-PurchaseDocument IS INITIAL.
+        APPEND VALUE #( %tky                      = key_-%tky
+                        %msg                      = new_message(
+                                                         id       = 'ZMSG_E_PDOC'
+                                                         number   = '009'
+                                                         severity = if_abap_behv_message=>severity-error )
+                        %element-PurchaseDocument = cl_abap_behv=>flag_changed )
+          TO reported-PurchaseDocument.
+        CONTINUE.
+      ENDIF.
+
+      READ TABLE pdoc_data ASSIGNING FIELD-SYMBOL(<pdoc>) WITH KEY %tky = key_-%tky.
+      IF sy-subrc <> 0.
+        CONTINUE.
+      ENDIF.
+
+      IF <pdoc>-Status = '2'.
+        APPEND VALUE #( %tky                      = key_-%tky
+                        %msg                      = new_message(
+                                                         id       = 'ZMSG_E_PDOC'
+                                                         number   = '013'
+                                                         v1       = key_-PurchaseDocument
+                                                         severity = if_abap_behv_message=>severity-error )
+                        %element-PurchaseDocument = cl_abap_behv=>flag_changed )
+          TO reported-PurchaseDocument.
+        CONTINUE.
+      ENDIF.
+
+      IF <pdoc>-Status = '3'.
+        APPEND VALUE #( %tky                      = key_-%tky
+                        %msg                      = new_message(
+                                                         id       = 'ZMSG_E_PDOC'
+                                                         number   = '014'
+                                                         v1       = key_-PurchaseDocument
+                                                         severity = if_abap_behv_message=>severity-error )
+                        %element-PurchaseDocument = cl_abap_behv=>flag_changed )
+          TO reported-PurchaseDocument.
+        CONTINUE.
+      ENDIF.
+
+      APPEND VALUE #( %tky   = key_-%tky
+                      Status = '2' ) TO lt_update.
+
+    ENDLOOP.
+
+    CHECK lt_update IS NOT INITIAL.
 
     MODIFY ENTITIES OF zig_pdoc_rv_comp IN LOCAL MODE
       ENTITY PurchaseDocument
       UPDATE FIELDS ( Status )
-      WITH VALUE #( FOR key IN keys
-                    ( %tky   = key-%tky
-                      Status = '2' ) )
+      WITH lt_update
       FAILED failed
       REPORTED reported.
 
-    LOOP AT keys INTO DATA(key_).
-      IF line_exists( failed-PurchaseDocument[ %tky = key_-%tky ] ).
-        CONTINUE.
-      ENDIF.
+    LOOP AT keys INTO key_.
+      CHECK line_exists( lt_update[ %tky = key_-%tky ] ).
+      CHECK NOT line_exists( failed-PurchaseDocument[ %tky = key_-%tky ] ).
 
       APPEND VALUE #( %tky    = key_-%tky
                       %param  = CORRESPONDING #( key_ ) ) TO result.
@@ -51,40 +104,83 @@ clear result.
                                                        severity = if_abap_behv_message=>severity-success )
                       %element-PurchaseDocument = cl_abap_behv=>flag_changed )
         TO reported-PurchaseDocument.
-        ENDLOOP.
+    ENDLOOP.
   ENDMETHOD.
 
   METHOD Reject_Order.
 * In the custom Action method for Rejecting/Closing a PurchaseDocument,
-* The incoming parameter is looped and the relevant PurchaseDocument status is set as closed (3)
-* and details of the Action are stored in the RESULT parameter of the method
- CLEAR result.
+* current status is read first and branched upon before updating.
+* Messages used: 009 (initial), 014 (already closed), 003 (closed)
+    DATA lt_update TYPE TABLE FOR UPDATE zig_pdoc_rv_comp\\PurchaseDocument.
+    CLEAR result.
+
+    READ ENTITIES OF zig_pdoc_rv_comp IN LOCAL MODE
+      ENTITY PurchaseDocument
+      FIELDS ( Status )
+      WITH CORRESPONDING #( keys )
+      RESULT DATA(pdoc_data)
+      FAILED failed.
+
+    LOOP AT keys INTO DATA(key_).
+
+      IF key_-PurchaseDocument IS INITIAL.
+        APPEND VALUE #( %tky                      = key_-%tky
+                        %msg                      = new_message(
+                                                         id       = 'ZMSG_E_PDOC'
+                                                         number   = '009'
+                                                         severity = if_abap_behv_message=>severity-error )
+                        %element-PurchaseDocument = cl_abap_behv=>flag_changed )
+          TO reported-PurchaseDocument.
+        CONTINUE.
+      ENDIF.
+
+      READ TABLE pdoc_data ASSIGNING FIELD-SYMBOL(<pdoc>) WITH KEY %tky = key_-%tky.
+      IF sy-subrc <> 0.
+        CONTINUE.
+      ENDIF.
+
+      IF <pdoc>-Status = '3'.
+        APPEND VALUE #( %tky                      = key_-%tky
+                        %msg                      = new_message(
+                                                         id       = 'ZMSG_E_PDOC'
+                                                         number   = '014'
+                                                         v1       = key_-PurchaseDocument
+                                                         severity = if_abap_behv_message=>severity-error )
+                        %element-PurchaseDocument = cl_abap_behv=>flag_changed )
+          TO reported-PurchaseDocument.
+        CONTINUE.
+      ENDIF.
+
+      " Approved (status '2') or any other status: collect for closing
+      APPEND VALUE #( %tky   = key_-%tky
+                      Status = '3' ) TO lt_update.
+
+    ENDLOOP.
+
+    CHECK lt_update IS NOT INITIAL.
 
     MODIFY ENTITIES OF zig_pdoc_rv_comp IN LOCAL MODE
       ENTITY PurchaseDocument
       UPDATE FIELDS ( Status )
-      WITH VALUE #( FOR key IN keys
-                    ( %tky   = key-%tky
-                      Status = '3' ) )
+      WITH lt_update
       FAILED failed
       REPORTED reported.
 
-    LOOP AT keys INTO DATA(key_).
-      IF line_exists( failed-PurchaseDocument[ %tky = key_-%tky ] ).
-        CONTINUE.
-      ENDIF.
+    LOOP AT keys INTO key_.
+      CHECK line_exists( lt_update[ %tky = key_-%tky ] ).
+      CHECK NOT line_exists( failed-PurchaseDocument[ %tky = key_-%tky ] ).
 
       APPEND VALUE #( %tky    = key_-%tky
                       %param  = CORRESPONDING #( key_ ) ) TO result.
       APPEND VALUE #( %tky                      = key_-%tky
                       %msg                      = new_message(
-                                                       id       = 'ZZMSG_E_PDOC'
+                                                       id       = 'ZMSG_E_PDOC'
                                                        number   = '003'
                                                        v1       = key_-PurchaseDocument
                                                        severity = if_abap_behv_message=>severity-success )
                       %element-PurchaseDocument = cl_abap_behv=>flag_changed )
         TO reported-PurchaseDocument.
-        ENDLOOP.
+    ENDLOOP.
 
   ENDMETHOD.
 
