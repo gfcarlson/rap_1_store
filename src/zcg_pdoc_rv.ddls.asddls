@@ -2,6 +2,7 @@
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @Search.searchable: true
 @Metadata.allowExtensions:true
+@Metadata.draftBehaviorType: #DRAFT_ENABLED
 @VDM.viewType: #CONSUMPTION
 define root view entity ZCG_PDoc_RV
   provider contract transactional_query

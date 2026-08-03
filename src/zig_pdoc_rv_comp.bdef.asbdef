@@ -13,6 +13,9 @@ authorization master( global )
   create;
   update;
   delete;
+  draft action Edit;
+  draft action Discard;
+  draft action Resume;
 
   draft action Edit;
   draft action Activate optimized;
