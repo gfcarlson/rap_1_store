@@ -47,7 +47,13 @@ CLASS lhc_PurchaseDocument IMPLEMENTATION.
         CONTINUE.
       ENDIF.
 
-      READ TABLE pdoc_data ASSIGNING FIELD-SYMBOL(<pdoc>) WITH KEY %tky = key_-%tky.
+*      READ TABLE pdoc_data ASSIGNING FIELD-SYMBOL(<pdoc>) WITH KEY %tky = key_-%tky.
+
+      READ TABLE pdoc_data ASSIGNING FIELD-SYMBOL(<pdoc>)
+  WITH TABLE KEY id COMPONENTS
+    %is_draft        = key_-%is_draft
+    PurchaseDocument = key_-PurchaseDocument.
+
       IF sy-subrc <> 0.
         CONTINUE.
       ENDIF.
@@ -91,8 +97,20 @@ CLASS lhc_PurchaseDocument IMPLEMENTATION.
       REPORTED reported.
 
     LOOP AT keys INTO key_.
-      CHECK line_exists( lt_update[ %tky = key_-%tky ] ).
-      CHECK NOT line_exists( failed-PurchaseDocument[ %tky = key_-%tky ] ).
+*      CHECK line_exists( lt_update[ %tky = key_-%tky ] ).
+*      CHECK NOT line_exists( failed-PurchaseDocument[ %tky = key_-%tky ] ).
+
+
+      CHECK line_exists(
+  lt_update[ KEY id %tky = key_-%tky ]
+).
+
+CHECK NOT line_exists(
+  failed-PurchaseDocument[
+    KEY entity
+    PurchaseDocument = key_-PurchaseDocument
+  ]
+).
 
       APPEND VALUE #( %tky    = key_-%tky
                       %param  = CORRESPONDING #( key_ ) ) TO result.
@@ -134,10 +152,13 @@ CLASS lhc_PurchaseDocument IMPLEMENTATION.
         CONTINUE.
       ENDIF.
 
-      READ TABLE pdoc_data ASSIGNING FIELD-SYMBOL(<pdoc>) WITH KEY %tky = key_-%tky.
-      IF sy-subrc <> 0.
-        CONTINUE.
-      ENDIF.
+ READ TABLE pdoc_data ASSIGNING FIELD-SYMBOL(<pdoc>)
+  WITH TABLE KEY id COMPONENTS
+    %is_draft        = key_-%is_draft
+    PurchaseDocument = key_-PurchaseDocument.
+IF sy-subrc <> 0.
+  CONTINUE.
+ENDIF.
 
       IF <pdoc>-Status = '3'.
         APPEND VALUE #( %tky                      = key_-%tky
@@ -167,8 +188,20 @@ CLASS lhc_PurchaseDocument IMPLEMENTATION.
       REPORTED reported.
 
     LOOP AT keys INTO key_.
-      CHECK line_exists( lt_update[ %tky = key_-%tky ] ).
-      CHECK NOT line_exists( failed-PurchaseDocument[ %tky = key_-%tky ] ).
+*      CHECK line_exists( lt_update[ %tky = key_-%tky ] ).
+*      CHECK NOT line_exists( failed-PurchaseDocument[ %tky = key_-%tky ] ).
+
+
+CHECK line_exists(
+  lt_update[ KEY id %tky = key_-%tky ]
+).
+
+CHECK NOT line_exists(
+  failed-PurchaseDocument[
+    KEY entity
+    PurchaseDocument = key_-PurchaseDocument
+  ]
+).
 
       APPEND VALUE #( %tky    = key_-%tky
                       %param  = CORRESPONDING #( key_ ) ) TO result.
