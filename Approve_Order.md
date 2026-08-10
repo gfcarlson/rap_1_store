@@ -1,6 +1,6 @@
 # Approve_Order — Technical RAP Flow
 
-This document captures everything covered about what happens when a user clicks **Approve_Order** in the RAP purchase document application, including the technical RAP flow, all diagrams, flowcharts, and sequence diagrams discussed.
+This document captures everything covered about what happens when a user clicks **Approve_Order** in the RAP purchase document application, including the technical RAP flow, all diagrams, flowcharts, [...]
 
 ## End-to-end technical overview
 
@@ -12,7 +12,7 @@ When the user clicks **Approve_Order**, the request travels through the RAP stac
 - **Projection View** `ZCG_PDoc_RV` maps the request into the consumption model
 - **Projection Behavior** `zcg_pdoc_rv.bdef` re-exposes the action
 - **Root Behavior** `zig_pdoc_rv_comp.bdef` owns the business object action
-- **Behavior Handler** `zbig_pdoc_rv_comp->approve_order()` performs the state transition
+- **Behavior Handler** `zbig_pdoc_rv_comp.approve_order()` performs the state transition
 - **Persistence** is updated in `ZTG_PDOC` or `ZTG_PDOC_D` depending on draft state
 
 ## Sequence diagram — business-level flow
@@ -42,7 +42,7 @@ ZIG_PDoc_RV_COMP
   │
   ▼
 Behavior Handler
-zbig_pdoc_rv_comp->approve_order( )
+zbig_pdoc_rv_comp.approve_order( )
   │
   ├─ Read current PurchaseDocument status
   ├─ Check key is not initial
@@ -72,7 +72,7 @@ sequenceDiagram
     participant SRVD as Service Definition<br/>ZSDG_PDOC_V_1
     participant PROJ as Projection Behavior<br/>ZCG_PDoc_RV.bdef
     participant ROOT as Root Behavior<br/>zig_pdoc_rv_comp.bdef
-    participant HANDLER as ABAP Behavior Handler<br/>zbig_pdoc_rv_comp->approve_order()
+    participant HANDLER as ABAP Behavior Handler<br/>zbig_pdoc_rv_comp.approve_order()
 
     User->>Fiori: Click Approve_Order
     Fiori->>OData: POST .../PurchaseDocuments('{key}')/Approve_Order
@@ -127,7 +127,7 @@ flowchart TD
 ```mermaid
 flowchart TD
     A[User clicks Approve_Order in Fiori Elements]
-    --> B[OData V4 POST action request<br/>/PurchaseDocuments('{key}')/Approve_Order]
+    --> B[OData V4 POST action request<br/>PurchaseDocuments(key) action Approve_Order]
 
     B --> C[Projection Entity<br/>ZCG_PDoc_RV]
 
@@ -135,7 +135,7 @@ flowchart TD
 
     D --> E[Root Behavior<br/>zig_pdoc_rv_comp.bdef<br/>action approve_order result [1] $self]
 
-    E --> F[ABAP Handler Method<br/>zbig_pdoc_rv_comp->approve_order( )<br/>FOR MODIFY]
+    E --> F[ABAP Handler Method<br/>zbig_pdoc_rv_comp.approve_order()<br/>FOR MODIFY]
 
     F --> G[READ ENTITIES OF zig_pdoc_rv_comp IN LOCAL MODE<br/>ENTITY PurchaseDocument<br/>FIELDS ( Status )<br/>WITH CORRESPONDING #( keys )]
 
@@ -174,7 +174,7 @@ flowchart TD
     B --> C[ZCG_PDoc_RV projection entity]
     C --> D[zcg_pdoc_rv.bdef]
     D --> E[zig_pdoc_rv_comp.bdef<br/>approve_order action]
-    E --> F[zbig_pdoc_rv_comp->approve_order()]
+    E --> F[zbig_pdoc_rv_comp.approve_order()]
 
     F --> G[READ ENTITIES OF zig_pdoc_rv_comp IN LOCAL MODE]
     G --> H{key initial?}
@@ -202,7 +202,7 @@ sequenceDiagram
     participant PROJ as ZCG_PDoc_RV
     participant BDEF as zcg_pdoc_rv.bdef
     participant ROOT as zig_pdoc_rv_comp.bdef
-    participant H as zbig_pdoc_rv_comp->approve_order()
+    participant H as zbig_pdoc_rv_comp.approve_order()
     participant ACT as ZTG_PDOC
     participant DFT as ZTG_PDOC_D
 
@@ -232,7 +232,7 @@ sequenceDiagram
 ```mermaid
 flowchart TD
     A[User clicks Approve_Order in Fiori Elements]
-    --> B[OData V4 POST action request<br/>/PurchaseDocuments('{key}')/Approve_Order]
+    --> B[OData V4 POST action request<br/>PurchaseDocuments(key) action Approve_Order]
 
     B --> C[Projection Entity<br/>ZCG_PDoc_RV]
 
@@ -240,7 +240,7 @@ flowchart TD
 
     D --> E[Root Behavior<br/>zig_pdoc_rv_comp.bdef<br/>action approve_order result [1] $self]
 
-    E --> F[ABAP Handler Method<br/>zbig_pdoc_rv_comp->approve_order( )<br/>FOR MODIFY]
+    E --> F[ABAP Handler Method<br/>zbig_pdoc_rv_comp.approve_order()<br/>FOR MODIFY]
 
     F --> G[READ ENTITIES OF zig_pdoc_rv_comp IN LOCAL MODE<br/>ENTITY PurchaseDocument<br/>FIELDS ( Status )<br/>WITH CORRESPONDING #( keys )]
 
@@ -289,5 +289,5 @@ flowchart TD
 - UI entity: `ZCG_PDoc_RV`
 - Projection behavior: `zcg_pdoc_rv.bdef`
 - Root behavior: `zig_pdoc_rv_comp.bdef`
-- Behavior handler: `zbig_pdoc_rv_comp->approve_order()`
+- Behavior handler: `zbig_pdoc_rv_comp.approve_order()`
 - Persistence: `ZTG_PDOC` and `ZTG_PDOC_D`
