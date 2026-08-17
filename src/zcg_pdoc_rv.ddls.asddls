@@ -19,10 +19,10 @@ define root view entity ZCG_PDoc_RV
       IsApprovalRequired,
       OverallPriceCriticality,
       @EndUserText.label: 'Status'
-      @Consumption.valueHelpDefinition: [{entity:{name:'Z_C_StatusVH' , element: 'Status'}}]
+      @Consumption.valueHelpDefinition: [{entity:{name:'ZIG_PDoc_Status' , element: 'Status'}}]
       Status,
       @EndUserText.label: 'Priority'
-      @Consumption.valueHelpDefinition: [{entity:{name:'Z_C_PriorityVH' , element: 'Priority'}}]
+      @Consumption.valueHelpDefinition: [{entity:{name:'ZIG_Pdoc_Priority' , element: 'Priority'}}]
       Priority,
       @Search.defaultSearchElement : true
       @Search.fuzzinessThreshold : 0.8
@@ -30,7 +30,7 @@ define root view entity ZCG_PDoc_RV
       @EndUserText.label: 'Description'
       Description,
       @EndUserText.label: 'Purchasing Organization'
-      @Consumption.valueHelpDefinition: [{entity:{name:'Z_I_PurchasingOrganization' , element: 'PurchasingOrganization'}}]
+      @Consumption.valueHelpDefinition: [{entity:{name:'ZIG_Purch_Org' , element: 'PurchasingOrganization'}}]
       PurchasingOrganization,
       @EndUserText.label: 'Currency'
       Currency,

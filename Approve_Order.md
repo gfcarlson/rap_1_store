@@ -59,12 +59,13 @@ MODIFY ENTITIES
   ▼
 UI refreshes
   │
-  └─ shows Status = Approved ('2')
+  └─ shows Status = Approved status 2
 ```
 
 ## Sequence diagram — technical RAP flow
 
 ```mermaid
+%%{init: {"theme": "base", "themeVariables": {"background": "transparent", "fontFamily": "ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif", "primaryColor": "#ffffff", "primaryTextColor": "#000000", "primaryBorderColor": "#ffd400", "lineColor": "#ffd400", "signalColor": "#ffd400", "secondaryColor": "#ffffff", "secondaryTextColor": "#000000", "secondaryBorderColor": "#ffd400", "actorBkg": "#ffffff", "actorTextColor": "#000000", "actorBorderColor": "#ffd400", "noteBkgColor": "#ffffff", "noteTextColor": "#ffffff", "noteBorderColor": "#ffd400", "clusterBkg": "#ffffff", "clusterBorderColor": "#ffd400", "textColor": "#ffffff", "labelTextColor": "#ffffff", "messageTextColor": "#ffffff", "messageFontColor": "#ffffff", "altTextColor": "#ffffff", "loopTextColor": "#ffffff", "activationTextColor": "#ffffff"}}}%%
 sequenceDiagram
     actor User
     participant Fiori as Fiori Elements / UI
@@ -72,7 +73,7 @@ sequenceDiagram
     participant SRVD as Service Definition<br/>ZSDG_PDOC_V_1
     participant PROJ as Projection Behavior<br/>ZCG_PDoc_RV.bdef
     participant ROOT as Root Behavior<br/>zig_pdoc_rv_comp.bdef
-    participant HANDLER as ABAP Behavior Handler<br/>zbig_pdoc_rv_comp.approve_order()
+    participant HANDLER as ABAP Behavior Handler
 
     User->>Fiori: Click Approve_Order
     Fiori->>OData: POST .../PurchaseDocuments('{key}')/Approve_Order
@@ -91,7 +92,7 @@ sequenceDiagram
     alt valid transition
         HANDLER-->>PROJ: result + reported message 002
         PROJ-->>Fiori: Return updated entity
-        Fiori-->>User: Show Approved ('2')
+        Fiori-->>User: Show Approved status 2
     else invalid transition
         HANDLER-->>PROJ: failed/reported message 013 or 014
         PROJ-->>Fiori: Return error response
@@ -102,6 +103,7 @@ sequenceDiagram
 ## Flowchart — technical RAP internals
 
 ```mermaid
+%%{init: {"theme": "base", "themeVariables": {"background": "transparent", "fontFamily": "ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif", "primaryColor": "#ffffff", "primaryTextColor": "#000000", "primaryBorderColor": "#ffd400", "lineColor": "#ffd400", "signalColor": "#ffd400", "secondaryColor": "#ffffff", "secondaryTextColor": "#000000", "secondaryBorderColor": "#ffd400", "actorBkg": "#ffffff", "actorTextColor": "#000000", "actorBorderColor": "#ffd400", "noteBkgColor": "#ffffff", "noteTextColor": "#000000", "noteBorderColor": "#ffd400", "clusterBkg": "#ffffff", "clusterBorderColor": "#ffd400"}}}%%
 flowchart TD
     A[UI Action: Approve_Order] --> B[OData V4 POST action request]
     B --> C[Service Binding routes request]
@@ -125,19 +127,20 @@ flowchart TD
 ## Flowchart — exact status transition rules
 
 ```mermaid
+%%{init: {"theme": "base", "themeVariables": {"background": "transparent", "fontFamily": "ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif", "primaryColor": "#ffffff", "primaryTextColor": "#000000", "primaryBorderColor": "#ffd400", "lineColor": "#ffd400", "signalColor": "#ffd400", "secondaryColor": "#ffffff", "secondaryTextColor": "#000000", "secondaryBorderColor": "#ffd400", "actorBkg": "#ffffff", "actorTextColor": "#000000", "actorBorderColor": "#ffd400", "noteBkgColor": "#ffffff", "noteTextColor": "#000000", "noteBorderColor": "#ffd400", "clusterBkg": "#ffffff", "clusterBorderColor": "#ffd400", "textColor": "#000000", "labelTextColor": "#000000"}}}%%
 flowchart TD
     A[User clicks Approve_Order in Fiori Elements]
-    --> B[OData V4 POST action request<br/>PurchaseDocuments(key) action Approve_Order]
+    --> B[OData V4 POST action request<br/>PurchaseDocuments key action Approve_Order]
 
     B --> C[Projection Entity<br/>ZCG_PDoc_RV]
 
     C --> D[Projection Behavior<br/>zcg_pdoc_rv.bdef<br/>use action approve_order]
 
-    D --> E[Root Behavior<br/>zig_pdoc_rv_comp.bdef<br/>action approve_order result [1] $self]
+    D --> E[Root Behavior<br/>zig_pdoc_rv_comp.bdef<br/>action approve_order result self]
 
-    E --> F[ABAP Handler Method<br/>zbig_pdoc_rv_comp.approve_order()<br/>FOR MODIFY]
+    E --> F["ABAP Handler Method<br/>zbig_pdoc_rv_comp.approve_order()<br/>FOR MODIFY"]
 
-    F --> G[READ ENTITIES OF zig_pdoc_rv_comp IN LOCAL MODE<br/>ENTITY PurchaseDocument<br/>FIELDS ( Status )<br/>WITH CORRESPONDING #( keys )]
+    F --> G["READ ENTITIES OF zig_pdoc_rv_comp IN LOCAL MODE<br/>ENTITY PurchaseDocument<br/>FIELDS ( Status )<br/>WITH CORRESPONDING #( keys )"]
 
     G --> H{PurchaseDocument key initial?}
 
@@ -151,7 +154,7 @@ flowchart TD
 
     J -- '1' --> M[Set Status = '2'<br/>Approved]
 
-    M --> N[MODIFY ENTITIES OF zig_pdoc_rv_comp IN LOCAL MODE<br/>ENTITY PurchaseDocument<br/>UPDATE FIELDS ( Status )<br/>WITH lt_update]
+    M --> N["MODIFY ENTITIES OF zig_pdoc_rv_comp IN LOCAL MODE<br/>ENTITY PurchaseDocument<br/>UPDATE FIELDS ( Status )<br/>WITH lt_update"]
 
     N --> O{Draft? %is_draft}
 
@@ -163,20 +166,21 @@ flowchart TD
 
     R --> S[REPORTED success message<br/>ZMSG_E_PDOC 002<br/>Document approved]
 
-    S --> T[UI refreshes entity<br/>Status = Approved ('2')]
+    S --> T[UI refreshes entity<br/>Status = Approved status 2]
 ```
 
 ## Draft vs active path
 
 ```mermaid
+%%{init: {"theme": "base", "themeVariables": {"background": "transparent", "fontFamily": "ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif", "primaryColor": "#ffffff", "primaryTextColor": "#000000", "primaryBorderColor": "#ffd400", "lineColor": "#ffd400", "secondaryColor": "#ffffff", "secondaryTextColor": "#000000", "secondaryBorderColor": "#ffd400", "tertiaryColor": "#ffffff", "tertiaryTextColor": "#000000", "tertiaryBorderColor": "#ffd400", "actorBkg": "#ffffff", "actorTextColor": "#000000", "actorBorderColor": "#ffd400", "signalColor": "#ffd400", "noteBkgColor": "#ffffff", "noteTextColor": "#ffffff", "noteBorderColor": "#ffd400", "clusterBkg": "#ffffff", "clusterBorderColor": "#ffd400", "textColor": "#ffffff", "labelTextColor": "#ffffff", "altTextColor": "#ffffff", "loopTextColor": "#ffffff", "activationTextColor": "#ffffff"}}}%%
 flowchart TD
     A[User clicks Approve_Order] --> B[OData V4 action request]
     B --> C[ZCG_PDoc_RV projection entity]
     C --> D[zcg_pdoc_rv.bdef]
     D --> E[zig_pdoc_rv_comp.bdef<br/>approve_order action]
-    E --> F[zbig_pdoc_rv_comp.approve_order()]
+    E --> F["zbig_pdoc_rv_comp.approve_order()"]
 
-    F --> G[READ ENTITIES OF zig_pdoc_rv_comp IN LOCAL MODE]
+    F --> G["READ ENTITIES OF zig_pdoc_rv_comp IN LOCAL MODE"]
     G --> H{key initial?}
     H -- Yes --> I[Error 009<br/>Initial]
     H -- No --> J{Status = '2'?}
@@ -196,13 +200,14 @@ flowchart TD
 ```
 
 ```mermaid
+%%{init: {"theme": "base", "themeVariables": {"background": "transparent", "fontFamily": "ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif", "primaryColor": "#ffffff", "primaryTextColor": "#000000", "primaryBorderColor": "#ffd400", "lineColor": "#ffd400", "secondaryColor": "#ffffff", "secondaryTextColor": "#000000", "secondaryBorderColor": "#ffd400", "tertiaryColor": "#ffffff", "tertiaryTextColor": "#000000", "tertiaryBorderColor": "#ffd400", "actorBkg": "#ffffff", "actorTextColor": "#000000", "actorBorderColor": "#ffd400", "signalColor": "#ffd400", "noteBkgColor": "#ffffff", "noteTextColor": "#ffffff", "noteBorderColor": "#ffd400", "clusterBkg": "#ffffff", "clusterBorderColor": "#ffd400", "textColor": "#ffffff", "labelTextColor": "#ffffff", "messageTextColor": "#ffffff", "messageFontColor": "#ffffff"}}}%%
 sequenceDiagram
     actor User
     participant FE as Fiori Elements
     participant PROJ as ZCG_PDoc_RV
     participant BDEF as zcg_pdoc_rv.bdef
     participant ROOT as zig_pdoc_rv_comp.bdef
-    participant H as zbig_pdoc_rv_comp.approve_order()
+    participant H as ABAP Behavior Handler
     participant ACT as ZTG_PDOC
     participant DFT as ZTG_PDOC_D
 
@@ -230,32 +235,19 @@ sequenceDiagram
 ## Annotated single-page RAP diagram
 
 ```mermaid
+%%{init: {"theme": "base", "themeVariables": {"background": "transparent", "fontFamily": "ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif", "primaryColor": "#ffffff", "primaryTextColor": "#000000", "primaryBorderColor": "#ffd400", "lineColor": "#ffd400", "secondaryColor": "#ffffff", "secondaryTextColor": "#000000", "secondaryBorderColor": "#ffd400", "tertiaryColor": "#ffffff", "tertiaryTextColor": "#000000", "tertiaryBorderColor": "#ffd400", "actorBkg": "#ffffff", "actorTextColor": "#000000", "actorBorderColor": "#ffd400", "signalColor": "#ffd400", "noteBkgColor": "#ffffff", "noteTextColor": "#000000", "noteBorderColor": "#ffd400", "clusterBkg": "#ffffff", "clusterBorderColor": "#ffd400"}}}%%
 flowchart TD
     A[User clicks Approve_Order in Fiori Elements]
-    --> B[OData V4 POST action request<br/>PurchaseDocuments(key) action Approve_Order]
+    --> B[OData V4 POST action request<br/>PurchaseDocuments key action Approve_Order]
 
     B --> C[Projection Entity<br/>ZCG_PDoc_RV]
 
-    C --> D[Projection Behavior<br/>zcg_pdoc_rv.bdef<br/>use action approve_order]
-
-    D --> E[Root Behavior<br/>zig_pdoc_rv_comp.bdef<br/>action approve_order result [1] $self]
-
-    E --> F[ABAP Handler Method<br/>zbig_pdoc_rv_comp.approve_order()<br/>FOR MODIFY]
-
-    F --> G[READ ENTITIES OF zig_pdoc_rv_comp IN LOCAL MODE<br/>ENTITY PurchaseDocument<br/>FIELDS ( Status )<br/>WITH CORRESPONDING #( keys )]
+    F --> G["READ ENTITIES OF zig_pdoc_rv_comp IN LOCAL MODE<br/>ENTITY PurchaseDocument<br/>FIELDS ( Status )<br/>WITH CORRESPONDING #( keys )"]
 
     G --> H{Validate RAP key / state}
-
-    H -- key initial --> I[REPORTED: ZMSG_E_PDOC 009<br/>Purchase Document is Initial]
-
     H -- Status = '2' --> J[REPORTED: ZMSG_E_PDOC 013<br/>Already Approved]
 
     H -- Status = '3' --> K[REPORTED: ZMSG_E_PDOC 014<br/>Already Closed]
-
-    H -- valid --> L[Set Status = '2']
-
-    L --> M[MODIFY ENTITIES OF zig_pdoc_rv_comp IN LOCAL MODE<br/>ENTITY PurchaseDocument<br/>UPDATE FIELDS ( Status )<br/>WITH lt_update]
-
     M --> N{Draft? %is_draft}
 
     N -- true --> O[Persist draft change<br/>ZTG_PDOC_D.STATUS = '2']
@@ -266,7 +258,7 @@ flowchart TD
 
     Q --> R[REPORTED success message<br/>ZMSG_E_PDOC 002<br/>Document approved]
 
-    R --> S[UI refreshes entity<br/>Status = Approved ('2')]
+    R --> S[UI refreshes entity<br/>Status = Approved status 2]
 ```
 
 ## Runtime callouts
