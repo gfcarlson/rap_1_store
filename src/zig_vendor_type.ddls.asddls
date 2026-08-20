@@ -6,7 +6,7 @@
 @ObjectModel.semanticKey: ['VendorType']
 @Analytics.dataCategory: #DIMENSION
 @ObjectModel.resultSet.sizeCategory: #XS
-define view ZIG_Vendor_type   as select from zpurchvendortyp
+define view ZIG_Vendor_type   as select from ztg_vendor_type
 {
 
       @ObjectModel.text.element: ['VendorTypeText']

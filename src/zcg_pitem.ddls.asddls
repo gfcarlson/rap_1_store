@@ -1,4 +1,4 @@
-@EndUserText.label: 'Purchase Document'
+@EndUserText.label: 'ZCG_PDoc'
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @Search.searchable: true
 @Metadata.allowExtensions:true
@@ -21,9 +21,9 @@ define view entity ZCG_PItem
       @Search: {defaultSearchElement: true, ranking: #HIGH, fuzzinessThreshold: 0.8}
       @EndUserText.label: 'Vendor Name'
       Vendor,
-      @EndUserText.label: 'Vendor Type'
-      @Consumption.valueHelpDefinition: [{entity:{name:'Z_C_VendorTypeVH' , element: 'VendorType'}}]
-      VendorType,      
+//      @EndUserText.label: 'Vendor Type'
+//      @Consumption.valueHelpDefinition: [{entity:{name:'Z_C_VendorTypeVH' , element: 'VendorType'}}]
+//      VendorType,      
       @Search: {defaultSearchElement: true, ranking: #HIGH, fuzzinessThreshold: 0.8}
       @EndUserText.label: 'Item Description'
       Description,    
